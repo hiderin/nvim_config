@@ -1,4 +1,5 @@
 {
+  "agit.vim": { "branch": "master", "commit": "8b168d347bc746f772ac99e461099ca20ff12582" },
   "ddu-column-filename": { "branch": "main", "commit": "c7a9e3fbd7b936b057e0e6de0b5095f445abc935" },
   "ddu-filter-converter_devicon": { "branch": "main", "commit": "8bbf0a0457beb8defdd41abe0d6ea2fe877fa96c" },
   "ddu-filter-matcher_substring": { "branch": "main", "commit": "48d865c7396762284dbe3e72accf41599b5e4d7c" },
@@ -15,10 +16,11 @@
   "denops.vim": { "branch": "main", "commit": "a278b8342459e4687f24d4d575d72ff593326cee" },
   "kensaku-search.vim": { "branch": "main", "commit": "9568c2b174a9cf31bd9922c0a991117f4dd4f0c3" },
   "kensaku.vim": { "branch": "main", "commit": "67727c8cc81f45b3c3abc600ecfef6fba620eb88" },
-  "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
-  "mason-lspconfig.nvim": { "branch": "main", "commit": "f760507df8c49a4bf46a4d12e1fc616797508979" },
-  "mason.nvim": { "branch": "main", "commit": "b3689a41dd77e5294498dba9757fb22cc80cbebd" },
-  "nvim-lspconfig": { "branch": "master", "commit": "0867a61e745920dd754c660a504fed4afb44bd0f" },
+  "lazy.nvim": { "branch": "main", "commit": "59334064f8604ca073791c25dcc5c9698865406e" },
+  "mason-lspconfig.nvim": { "branch": "main", "commit": "155eac5d8609a2f110041f8ac3491664cc126354" },
+  "mason.nvim": { "branch": "main", "commit": "ad7146aa61dcaeb54fa900144d768f040090bff0" },
+  "nvim-lspconfig": { "branch": "master", "commit": "b8c3630ce37dfbe51910b68785a71620b072c41a" },
   "nvim-treesitter": { "branch": "master", "commit": "42fc28ba918343ebfd5565147a42a26580579482" },
-  "toggleterm.nvim": { "branch": "main", "commit": "50ea089fc548917cc3cc16b46a8211833b9e3c7c" }
+  "toggleterm.nvim": { "branch": "main", "commit": "50ea089fc548917cc3cc16b46a8211833b9e3c7c" },
+  "vim-fugitive": { "branch": "master", "commit": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4" }
 }

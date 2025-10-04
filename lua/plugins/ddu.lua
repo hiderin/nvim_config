@@ -54,7 +54,15 @@ return{
 				}
 			},
 			sources = {
-				{ name = "file", params = {} },
+				{
+					name = "file",
+					params = {},
+					options = {
+						matchers = {
+							"matcher_substring",
+						},
+					},
+				},
 			},
 			sourceOptions = {
 				file = {
@@ -228,16 +236,16 @@ return{
 				-- quit
 				vim.keymap.set("n", "q", function() vim.fn["ddu#ui#do_action"]("quit") end, opts)
 				-- 決定（<CR>）
-				--vim.keymap.set("n", "<CR>", function() vim.fn["ddu#ui#do_action"]("itemAction") end, opts)
+				vim.keymap.set("n", "<CR>", function() vim.fn["ddu#ui#do_action"]("itemAction") end, opts)
 				-- 決定（<CR>）
-				vim.keymap.set("n", "<CR>", function()
-					local item = vim.fn["ddu#ui#get_item"]()
-					if item and item.isTree then
-						vim.fn["ddu#ui#do_action"]("itemAction", { name = "narrow" })
-					else
-						vim.fn["ddu#ui#do_action"]("itemAction")
-					end
-				end, opts)
+				-- vim.keymap.set("n", "<CR>", function()
+				-- 	local item = vim.fn["ddu#ui#get_item"]()
+				-- 	if item and item.isTree then
+				-- 		vim.fn["ddu#ui#do_action"]("itemAction", { name = "cd" })
+				-- 	else
+				-- 		vim.fn["ddu#ui#do_action"]("itemAction")
+				-- 	end
+				-- end, opts)
 				--filter
 				vim.keymap.set("n", "i", function() vim.fn["ddu#ui#do_action"]("openFilterWindow") end, opts)
 				-- Preview

@@ -1,15 +1,9 @@
 import type { Context, Item, SourceOptions } from "@shougo/ddu-vim/types";
 import { BaseSource } from "@shougo/ddu-vim/source";
-import { treePath2Filename } from "@shougo/ddu-vim/utils";
 
 import { type ActionData } from "@shougo/ddu-kind-file";
 
 import type { Denops } from "@denops/std";
-
-import { join } from "@std/path/join";
-import { resolve } from "@std/path/resolve";
-import { relative } from "@std/path/relative";
-import { abortable } from "@std/async/abortable";
 
 type Params = {
   chunkSize: 1000;
@@ -25,7 +19,7 @@ type Args = {
 };
 
 export class Source extends BaseSource<Params> {
-  override kind = "file";
+  override kind = "drives";
 
   override gather(
     { sourceOptions, sourceParams, context }: Args,

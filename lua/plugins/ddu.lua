@@ -78,6 +78,9 @@ return{
 			kindOptions = {
 				file = {
 					defaultAction = "open",
+				},
+				drives = {
+					defaultAction = "open",
 				}
 			}
 		})

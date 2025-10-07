@@ -618,11 +618,16 @@ export const FileActions: Actions<Params> = {
           // Check the file is binary file or too big.
           const stat = await safeStat(action.path);
           if (stat && stat.isDirectory) {
-            await args.denops.call(
-              "ddu#kind#file#print",
-              `${action.path} is directory.`,
-            );
-            continue;
+        	const dir = await getDirectory(item);
+			await args.denops.call(
+				  "chdir",
+				  dir,
+			  );
+			  // await args.denops.call(
+			  //     "ddu#kind#file#print",
+			  //     `${action.path} is directory.`,
+			  // );
+			  continue;
           }
 
           if (stat && await isBinary(action.path, stat)) {

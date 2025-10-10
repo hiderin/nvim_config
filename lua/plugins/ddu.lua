@@ -205,6 +205,10 @@ return{
 		-- :e を :EditDot に置き換え
 		vim.cmd("cabbrev e EditDot")
 
+		-- dirvesからの呼出
+		vim.fn["ddu#custom#patch_local"]("myfiler", {
+			ui = "filer",
+		})
 		-- ----------------------------------------------------------------------------
 		-- ff
 		vim.fn["ddu#custom#patch_local"]("file_rec", {

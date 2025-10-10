@@ -420,7 +420,8 @@ export const FileActions: Actions<Params> = {
 
       if (args.items.length > 1) {
         await args.denops.call("ddu#start", {
-          name: args.options.name,
+          // name: args.options.name,
+          name: "filer",
           push: true,
           sources: await Promise.all(args.items.map(async (item) => {
             return {
@@ -618,11 +619,23 @@ export const FileActions: Actions<Params> = {
           // Check the file is binary file or too big.
           const stat = await safeStat(action.path);
           if (stat && stat.isDirectory) {
-        	const dir = await getDirectory(item);
-			await args.denops.call(
-				  "chdir",
-				  dir,
-			  );
+
+			  // ドライブパスを開く
+			  await args.denops.call("ddu#start", {
+				  // name: args.options.name,
+				  name: "myfiler",
+				  push: true,
+				  sources: await Promise.all(args.items.map(async (item) => {
+					  return {
+						  name: "file",
+						  options: {
+							  columns: args.sourceOptions.columns,
+							  path: await getDirectory(item),
+						  },
+					  };
+				  })),
+			  });
+
 			  // await args.denops.call(
 			  //     "ddu#kind#file#print",
 			  //     `${action.path} is directory.`,

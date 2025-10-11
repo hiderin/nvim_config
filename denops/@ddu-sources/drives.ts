@@ -29,20 +29,43 @@ export class Source extends BaseSource<Params> {
     return new ReadableStream({
       async start(controller) {
 		  // ドライブ一覧取得
-		  const drives: string[] = [];
-		  for (const letter of "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
-			  const drive = `${letter}:\\`;
-			  try {
-				  await Deno.stat(drive);
-				  drives.push(drive);
-			  } catch {
-				  // 無視
-			  }
-		  }
+		  const command = new Deno.Command("powershell", {
+			  args: [
+				  "-Command",
+				  "Get-Volume | Where-Object DriveLetter | ForEach-Object {\"$($_.DriveLetter): $($_.FileSystemLabel)\"}",
+			  ],
+			  stdout: "piped",
+		  });
+
+		  const output = await command.output();
+		  const text = new TextDecoder().decode(output.stdout);
+
+		  // --- 出力例 ---
+		  // Caption  VolumeName
+		  // C:       Windows
+		  // D:       Data
+		  // E:       
+
+		  // --- パース処理 ---
+		  const lines = text
+		  .split("\n")
+		  .map((l) => l.trim())
+		  .filter((l) => /^[A-Z]:/.test(l)); // A: で始まる行だけ
+
+		  // まず、ドライブ名とボリューム名の配列を作成
+		  const driveVolumes = lines.map((line) => {
+			  const parts = line.trim().split(/\s+/);
+			  const drive = parts[0].replace(":", "");
+			  const volume = parts.slice(1).join(" ") || "No Label";
+			  return { drive, volume };
+		  });
+
 		  // --- DduItem[] に変換 ---
-		  const items: DduItem<ActionData>[] = drives.map((drive) => ({
-			  word: drive,
-			  action: { path: drive},
+		  const items: DduItem<ActionData>[] = driveVolumes.map(({drive, volume}) => ({
+
+			  //word: drive + ":\\ (" + volume + ")",
+			  word: drive + ":\\",
+			  action: { path: drive + ":\\"},
 			  isTree: true,
 		  }));
 

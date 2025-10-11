@@ -152,6 +152,7 @@ return{
 					end
 				end, opts)
 				map("n", "P", function() vim.fn["ddu#ui#do_action"]("togglePreview") end, opts)
+				map("n", "<S-l>", function() vim.fn["ddu#start"]({name="ff_drives"}) end, opts)
 			end,
 		})
 		-- ----------------------------------------------------------------------------
@@ -205,10 +206,6 @@ return{
 		-- :e を :EditDot に置き換え
 		vim.cmd("cabbrev e EditDot")
 
-		-- dirvesからの呼出
-		vim.fn["ddu#custom#patch_local"]("myfiler", {
-			ui = "filer",
-		})
 		-- ----------------------------------------------------------------------------
 		-- ff
 		vim.fn["ddu#custom#patch_local"]("file_rec", {

@@ -616,63 +616,63 @@ export const FileActions: Actions<Params> = {
             await fn.setbufvar(args.denops, bufNr, "&buflisted", 1);
           }
         } else if (action.path) {
-          // Check the file is binary file or too big.
-          const stat = await safeStat(action.path);
-          if (stat && stat.isDirectory) {
+			// Check the file is binary file or too big.
+			const stat = await safeStat(action.path);
+			if (stat && stat.isDirectory) {
 
-			  // ドライブパスを開く
-			  await args.denops.call("ddu#start", {
-				  // name: args.options.name,
-				  name: "myfiler",
-				  push: true,
-				  sources: await Promise.all(args.items.map(async (item) => {
-					  return {
-						  name: "file",
-						  options: {
-							  columns: args.sourceOptions.columns,
-							  path: await getDirectory(item),
-						  },
-					  };
-				  })),
-			  });
+				// ドライブパスを開く
+				await args.denops.call("ddu#start", {
+					// name: args.options.name,
+					name: "filer",
+					push: true,
+					sources: await Promise.all(args.items.map(async (item) => {
+						return {
+							name: "file",
+							options: {
+								//columns: args.sourceOptions.columns,
+								path: await getDirectory(item),
+							},
+						};
+					})),
+				});
 
-			  // await args.denops.call(
-			  //     "ddu#kind#file#print",
-			  //     `${action.path} is directory.`,
-			  // );
-			  continue;
-          }
+				// await args.denops.call(
+				//     "ddu#kind#file#print",
+				//     `${action.path} is directory.`,
+				// );
+				continue;
+			}
 
-          if (stat && await isBinary(action.path, stat)) {
-            const confirm = await args.denops.call(
-              "ddu#kind#file#confirm",
-              `"${action.path}" has binary code.  Opening?`,
-              "&Yes\n&No\n&Cancel",
-              2,
-            ) as number;
-            if (confirm !== 1) {
-              continue;
-            }
-          }
+			if (stat && await isBinary(action.path, stat)) {
+				const confirm = await args.denops.call(
+					"ddu#kind#file#confirm",
+					`"${action.path}" has binary code.  Opening?`,
+					"&Yes\n&No\n&Cancel",
+					2,
+				) as number;
+				if (confirm !== 1) {
+					continue;
+				}
+			}
 
-          const maxSize = params.maxSize ?? 500000;
-          if (stat && stat.size > maxSize) {
-            const confirm = await args.denops.call(
-              "ddu#kind#file#confirm",
-              `"${action.path}" ${stat.size} bytes are too huge.  Opening?`,
-              "&Yes\n&No\n&Cancel",
-              2,
-            ) as number;
-            if (confirm !== 1) {
-              continue;
-            }
-          }
+			const maxSize = params.maxSize ?? 500000;
+			if (stat && stat.size > maxSize) {
+				const confirm = await args.denops.call(
+					"ddu#kind#file#confirm",
+					`"${action.path}" ${stat.size} bytes are too huge.  Opening?`,
+					"&Yes\n&No\n&Cancel",
+					2,
+				) as number;
+				if (confirm !== 1) {
+					continue;
+				}
+			}
 
-          await args.denops.call(
-            "ddu#util#execute_path",
-            openCommand,
-            action.path,
-          );
+			await args.denops.call(
+				"ddu#util#execute_path",
+				openCommand,
+				action.path,
+			);
         }
 
         const mode = await fn.mode(args.denops);

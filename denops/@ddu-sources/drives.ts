@@ -1,12 +1,12 @@
 import type { Context, Item, SourceOptions } from "@shougo/ddu-vim/types";
 import { BaseSource } from "@shougo/ddu-vim/source";
 
+// エンコード用
+import * as Encoding from "https://esm.sh/encoding-japanese";
+
 import { type ActionData } from "@shougo/ddu-kind-file";
 
 import type { Denops } from "@denops/std";
-
-// エンコード変換
-import * as Encoding from "https://esm.sh/encoding-japanese";
 
 type Params = {
   chunkSize: 1000;
@@ -41,7 +41,16 @@ export class Source extends BaseSource<Params> {
 		  });
 
 		  const output = await command.output();
-		  const text = new TextDecoder().decode(output.stdout);
+		  // const text = new TextDecoder().decode(output.stdout);
+
+		  // PowerShell出力はShift_JIS (CP932)
+		  const text = Encoding.convert(output.stdout, {
+			  to: "UNICODE",
+			  from: "SJIS",
+			  type: "string",
+		  });
+
+		  console.log(text);
 
 		  // --- 出力例 ---
 		  // Caption  VolumeName
@@ -59,13 +68,7 @@ export class Source extends BaseSource<Params> {
 		  const driveVolumes = lines.map((line) => {
 			  const parts = line.trim().split(/\s+/);
 			  const drive = parts[0].replace(":", "");
-			  const volume_sjis = parts.slice(1).join(" ") || "No Label";
-			  // SJIS → Unicode文字列
-			  const volume = Encoding.convert(volume_sjis, {
-				  to: 'UTF-8',
-				  from: 'SJIS',
-				  type: 'string'
-			  });
+			  const volume = parts.slice(1).join(" ") || "No Label";
 			  return { drive, volume };
 		  });
 

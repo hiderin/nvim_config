@@ -5,6 +5,9 @@ import { type ActionData } from "@shougo/ddu-kind-file";
 
 import type { Denops } from "@denops/std";
 
+// エンコード変換
+import * as Encoding from "https://esm.sh/encoding-japanese";
+
 type Params = {
   chunkSize: 1000;
   ignoredDirectories: string[];
@@ -56,15 +59,21 @@ export class Source extends BaseSource<Params> {
 		  const driveVolumes = lines.map((line) => {
 			  const parts = line.trim().split(/\s+/);
 			  const drive = parts[0].replace(":", "");
-			  const volume = parts.slice(1).join(" ") || "No Label";
+			  const volume_sjis = parts.slice(1).join(" ") || "No Label";
+			  // SJIS → Unicode文字列
+			  const volume = Encoding.convert(volume_sjis, {
+				  to: 'UTF-8',
+				  from: 'SJIS',
+				  type: 'string'
+			  });
 			  return { drive, volume };
 		  });
 
 		  // --- DduItem[] に変換 ---
 		  const items: DduItem<ActionData>[] = driveVolumes.map(({drive, volume}) => ({
 
-			  //word: drive + ":\\ (" + volume + ")",
-			  word: drive + ":\\",
+			  word: drive + ":\\ (" + volume + ")",
+			  //word: drive + ":\\",
 			  action: { path: drive + ":\\"},
 			  isTree: true,
 		  }));

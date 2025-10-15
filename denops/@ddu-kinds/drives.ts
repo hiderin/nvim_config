@@ -630,7 +630,8 @@ export const FileActions: Actions<Params> = {
 							name: "file",
 							options: {
 								//columns: args.sourceOptions.columns,
-								path: await getDirectory(item),
+								//path: await getDirectory(item),
+								path: action.path,
 							},
 						};
 					})),

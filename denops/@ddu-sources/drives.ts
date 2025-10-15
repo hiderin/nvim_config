@@ -35,13 +35,28 @@ export class Source extends BaseSource<Params> {
 		  const command = new Deno.Command("powershell", {
 			  args: [
 				  "-Command",
-				  "Get-Volume | Where-Object DriveLetter | ForEach-Object {\"$($_.DriveLetter): $($_.FileSystemLabel)\"}",
+				  `Get-PSDrive -PSProvider FileSystem | ForEach-Object {
+					  $driveLetter = $_.Name + ":"
+					  if ($_.DisplayRoot) {
+						  # ネットワークドライブの場合
+						  "$driveLetter $($_.DisplayRoot)"
+					  } else {
+						  # ローカルドライブの場合
+						  try {
+							  $vol = Get-Volume -DriveLetter $_.Name -ErrorAction Stop
+							  "$driveLetter $($vol.FileSystemLabel)"
+						  } catch {
+							  "$driveLetter (No Label)"
+						  }
+					  }
+				  }
+				  `
 			  ],
 			  stdout: "piped",
+			  stderr: "null",
 		  });
 
 		  const output = await command.output();
-		  // const text = new TextDecoder().decode(output.stdout);
 
 		  // PowerShell出力はShift_JIS (CP932)
 		  const text = Encoding.convert(output.stdout, {
@@ -49,14 +64,6 @@ export class Source extends BaseSource<Params> {
 			  from: "SJIS",
 			  type: "string",
 		  });
-
-		  console.log(text);
-
-		  // --- 出力例 ---
-		  // Caption  VolumeName
-		  // C:       Windows
-		  // D:       Data
-		  // E:       
 
 		  // --- パース処理 ---
 		  const lines = text

@@ -13,20 +13,12 @@ return {
         "html",
         "cssls",
         "eslint",
-        "ts_ls",        -- TypeScript/JavaScript
+        "ts_ls",
         "intelephense",
         "sqlls",
       },
       automatic_installation = true,
     })
 
-    local lspconfig = require("lspconfig")
-    lspconfig.pyright.setup({})
-    lspconfig.ts_ls.setup({})
-    lspconfig.html.setup({})
-    lspconfig.cssls.setup({})
-    lspconfig.intelephense.setup({})
-    lspconfig.sqlls.setup({})
   end,
 }
-

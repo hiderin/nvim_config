@@ -7,6 +7,10 @@ return{
 		------------------------------
 		"Shougo/ddu-filter-matcher_substring",
 		"uga-rosa/ddu-filter-converter_devicon",
+		"Shougo/ddu-filter-sorter_alpha",
+		"Shougo/ddu-filter-sorter_reversed",
+		"kuuote/ddu-filter-sorter_mtime",
+		"alpaca-tc/ddu-filter-sorter_directory_file",
 		------------------------------
 		-- | source                   |
 		------------------------------
@@ -60,6 +64,12 @@ return{
 					options = {
 						matchers = {
 							"matcher_substring",
+						},
+						sorters = {
+							"sorter_alpha",
+							-- "sorter_mtime",
+							"sorter_directory_file",
+							-- "sorter_reversed",
 						},
 					},
 				},
